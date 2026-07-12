@@ -411,10 +411,6 @@ func checkBalance(tokens []ExpressionToken) error {
 		}
 		if token.Kind == CLAUSE_CLOSE {
 			parens--
-			if parens < 0 {
-				// a close before any open can never rebalance, e.g. ")("
-				return errors.New("Unbalanced parenthesis")
-			}
 			continue
 		}
 	}

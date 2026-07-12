@@ -3,9 +3,11 @@ package govaluate
 import (
 	"errors"
 	"fmt"
+
+	"github.com/darui3018823/govaluate/internal/datetime"
 )
 
-const isoDateFormat string = "2006-01-02T15:04:05.999999999Z0700"
+const isoDateFormat string = datetime.ISOFormat
 const shortCircuitHolder int = -1
 
 var DUMMY_PARAMETERS = MapParameters(map[string]interface{}{})

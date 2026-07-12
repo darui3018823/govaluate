@@ -7,8 +7,9 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"time"
 	"unicode"
+
+	"github.com/darui3018823/govaluate/internal/datetime"
 )
 
 func parseTokens(expression string, functions map[string]ExpressionFunction) ([]ExpressionToken, error) {
@@ -57,7 +58,6 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 	var function ExpressionFunction
 	var ret ExpressionToken
 	var tokenValue interface{}
-	var tokenTime time.Time
 	var tokenString string
 	var kind TokenKind
 	var character rune
@@ -224,7 +224,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 			stream.rewind(-1)
 
 			// check to see if this can be parsed as a time.
-			tokenTime, found = tryParseTime(tokenValue.(string))
+			tokenTime, found := datetime.Parse(tokenValue.(string))
 			if found {
 				kind = TIME
 				tokenValue = tokenTime
@@ -473,57 +473,6 @@ func isVariableName(character rune) bool {
 func isNotClosingBracket(character rune) bool {
 
 	return character != ']'
-}
-
-/*
-	Attempts to parse the [candidate] as a Time.
-	Tries a series of standardized date formats, returns the Time if one applies,
-	otherwise returns false through the second return.
-*/
-func tryParseTime(candidate string) (time.Time, bool) {
-
-	var ret time.Time
-	var found bool
-
-	timeFormats := [...]string{
-		time.ANSIC,
-		time.UnixDate,
-		time.RubyDate,
-		time.Kitchen,
-		time.RFC3339,
-		time.RFC3339Nano,
-		"2006-01-02",                         // RFC 3339
-		"2006-01-02 15:04",                   // RFC 3339 with minutes
-		"2006-01-02 15:04:05",                // RFC 3339 with seconds
-		"2006-01-02 15:04:05-07:00",          // RFC 3339 with seconds and timezone
-		"2006-01-02T15Z0700",                 // ISO8601 with hour
-		"2006-01-02T15:04Z0700",              // ISO8601 with minutes
-		"2006-01-02T15:04:05Z0700",           // ISO8601 with seconds
-		"2006-01-02T15:04:05.999999999Z0700", // ISO8601 with nanoseconds
-	}
-
-	for _, format := range timeFormats {
-
-		ret, found = tryParseExactTime(candidate, format)
-		if found {
-			return ret, true
-		}
-	}
-
-	return time.Now(), false
-}
-
-func tryParseExactTime(candidate string, format string) (time.Time, bool) {
-
-	var ret time.Time
-	var err error
-
-	ret, err = time.ParseInLocation(format, candidate, time.Local)
-	if err != nil {
-		return time.Now(), false
-	}
-
-	return ret, true
 }
 
 func getFirstRune(candidate string) rune {

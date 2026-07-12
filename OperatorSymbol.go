@@ -1,51 +1,45 @@
 package govaluate
 
-/*
-	Represents the valid symbols for operators.
+import "github.com/darui3018823/govaluate/token"
 
-*/
-type OperatorSymbol int
+// OperatorSymbol represents the valid symbols for operators.
+type OperatorSymbol = token.OperatorSymbol
 
 const (
-	VALUE OperatorSymbol = iota
-	LITERAL
-	NOOP
-	EQ
-	NEQ
-	GT
-	LT
-	GTE
-	LTE
-	REQ
-	NREQ
-	IN
-
-	AND
-	OR
-
-	PLUS
-	MINUS
-	BITWISE_AND
-	BITWISE_OR
-	BITWISE_XOR
-	BITWISE_LSHIFT
-	BITWISE_RSHIFT
-	MULTIPLY
-	DIVIDE
-	MODULUS
-	EXPONENT
-
-	NEGATE
-	INVERT
-	BITWISE_NOT
-
-	TERNARY_TRUE
-	TERNARY_FALSE
-	COALESCE
-
-	FUNCTIONAL
-	ACCESS
-	SEPARATE
+	VALUE          = token.VALUE
+	LITERAL        = token.LITERAL
+	NOOP           = token.NOOP
+	EQ             = token.EQ
+	NEQ            = token.NEQ
+	GT             = token.GT
+	LT             = token.LT
+	GTE            = token.GTE
+	LTE            = token.LTE
+	REQ            = token.REQ
+	NREQ           = token.NREQ
+	IN             = token.IN
+	AND            = token.AND
+	OR             = token.OR
+	PLUS           = token.PLUS
+	MINUS          = token.MINUS
+	BITWISE_AND    = token.BITWISE_AND
+	BITWISE_OR     = token.BITWISE_OR
+	BITWISE_XOR    = token.BITWISE_XOR
+	BITWISE_LSHIFT = token.BITWISE_LSHIFT
+	BITWISE_RSHIFT = token.BITWISE_RSHIFT
+	MULTIPLY       = token.MULTIPLY
+	DIVIDE         = token.DIVIDE
+	MODULUS        = token.MODULUS
+	EXPONENT       = token.EXPONENT
+	NEGATE         = token.NEGATE
+	INVERT         = token.INVERT
+	BITWISE_NOT    = token.BITWISE_NOT
+	TERNARY_TRUE   = token.TERNARY_TRUE
+	TERNARY_FALSE  = token.TERNARY_FALSE
+	COALESCE       = token.COALESCE
+	FUNCTIONAL     = token.FUNCTIONAL
+	ACCESS         = token.ACCESS
+	SEPARATE       = token.SEPARATE
 )
 
 type operatorPrecedence int
@@ -142,9 +136,9 @@ func findOperatorPrecedenceForSymbol(symbol OperatorSymbol) operatorPrecedence {
 }
 
 /*
-	Map of all valid comparators, and their string equivalents.
-	Used during parsing of expressions to determine if a symbol is, in fact, a comparator.
-	Also used during evaluation to determine exactly which comparator is being used.
+Map of all valid comparators, and their string equivalents.
+Used during parsing of expressions to determine if a symbol is, in fact, a comparator.
+Also used during evaluation to determine exactly which comparator is being used.
 */
 var comparatorSymbols = map[string]OperatorSymbol{
 	"==": EQ,
@@ -218,92 +212,4 @@ var modifierSymbols = map[string]OperatorSymbol{
 
 var separatorSymbols = map[string]OperatorSymbol{
 	",": SEPARATE,
-}
-
-/*
-	Returns true if this operator is contained by the given array of candidate symbols.
-	False otherwise.
-*/
-func (this OperatorSymbol) IsModifierType(candidate []OperatorSymbol) bool {
-
-	for _, symbolType := range candidate {
-		if this == symbolType {
-			return true
-		}
-	}
-
-	return false
-}
-
-/*
-	Generally used when formatting type check errors.
-	We could store the stringified symbol somewhere else and not require a duplicated codeblock to translate
-	OperatorSymbol to string, but that would require more memory, and another field somewhere.
-	Adding operators is rare enough that we just stringify it here instead.
-*/
-func (this OperatorSymbol) String() string {
-
-	switch this {
-	case NOOP:
-		return "NOOP"
-	case VALUE:
-		return "VALUE"
-	case EQ:
-		return "="
-	case NEQ:
-		return "!="
-	case GT:
-		return ">"
-	case LT:
-		return "<"
-	case GTE:
-		return ">="
-	case LTE:
-		return "<="
-	case REQ:
-		return "=~"
-	case NREQ:
-		return "!~"
-	case AND:
-		return "&&"
-	case OR:
-		return "||"
-	case IN:
-		return "in"
-	case BITWISE_AND:
-		return "&"
-	case BITWISE_OR:
-		return "|"
-	case BITWISE_XOR:
-		return "^"
-	case BITWISE_LSHIFT:
-		return "<<"
-	case BITWISE_RSHIFT:
-		return ">>"
-	case PLUS:
-		return "+"
-	case MINUS:
-		return "-"
-	case MULTIPLY:
-		return "*"
-	case DIVIDE:
-		return "/"
-	case MODULUS:
-		return "%"
-	case EXPONENT:
-		return "**"
-	case NEGATE:
-		return "-"
-	case INVERT:
-		return "!"
-	case BITWISE_NOT:
-		return "~"
-	case TERNARY_TRUE:
-		return "?"
-	case TERNARY_FALSE:
-		return ":"
-	case COALESCE:
-		return "??"
-	}
-	return ""
 }

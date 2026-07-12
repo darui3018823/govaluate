@@ -1,75 +1,26 @@
 package govaluate
 
-/*
-	Represents all valid types of tokens that a token can be.
-*/
-type TokenKind int
+import "github.com/darui3018823/govaluate/token"
+
+// TokenKind represents all valid types of expression tokens.
+type TokenKind = token.TokenKind
 
 const (
-	UNKNOWN TokenKind = iota
-
-	PREFIX
-	NUMERIC
-	BOOLEAN
-	STRING
-	PATTERN
-	TIME
-	VARIABLE
-	FUNCTION
-	SEPARATOR
-	ACCESSOR
-
-	COMPARATOR
-	LOGICALOP
-	MODIFIER
-
-	CLAUSE
-	CLAUSE_CLOSE
-
-	TERNARY
+	UNKNOWN      = token.UNKNOWN
+	PREFIX       = token.PREFIX
+	NUMERIC      = token.NUMERIC
+	BOOLEAN      = token.BOOLEAN
+	STRING       = token.STRING
+	PATTERN      = token.PATTERN
+	TIME         = token.TIME
+	VARIABLE     = token.VARIABLE
+	FUNCTION     = token.FUNCTION
+	SEPARATOR    = token.SEPARATOR
+	ACCESSOR     = token.ACCESSOR
+	COMPARATOR   = token.COMPARATOR
+	LOGICALOP    = token.LOGICALOP
+	MODIFIER     = token.MODIFIER
+	CLAUSE       = token.CLAUSE
+	CLAUSE_CLOSE = token.CLAUSE_CLOSE
+	TERNARY      = token.TERNARY
 )
-
-/*
-	GetTokenKindString returns a string that describes the given TokenKind.
-	e.g., when passed the NUMERIC TokenKind, this returns the string "NUMERIC".
-*/
-func (kind TokenKind) String() string {
-
-	switch kind {
-
-	case PREFIX:
-		return "PREFIX"
-	case NUMERIC:
-		return "NUMERIC"
-	case BOOLEAN:
-		return "BOOLEAN"
-	case STRING:
-		return "STRING"
-	case PATTERN:
-		return "PATTERN"
-	case TIME:
-		return "TIME"
-	case VARIABLE:
-		return "VARIABLE"
-	case FUNCTION:
-		return "FUNCTION"
-	case SEPARATOR:
-		return "SEPARATOR"
-	case COMPARATOR:
-		return "COMPARATOR"
-	case LOGICALOP:
-		return "LOGICALOP"
-	case MODIFIER:
-		return "MODIFIER"
-	case CLAUSE:
-		return "CLAUSE"
-	case CLAUSE_CLOSE:
-		return "CLAUSE_CLOSE"
-	case TERNARY:
-		return "TERNARY"
-	case ACCESSOR:
-		return "ACCESSOR"
-	}
-
-	return "UNKNOWN"
-}

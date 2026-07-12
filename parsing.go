@@ -146,6 +146,16 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 			tokenValue = tokenString
 			kind = VARIABLE
 
+			// IEEE 754 NaN literal.
+			if tokenValue == "NaN" {
+				tokenValue, err = strconv.ParseFloat(tokenString, 64)
+				if err != nil {
+					errorMsg := fmt.Sprintf("Unable to parse numeric value '%v' to float64\n", tokenString)
+					return ExpressionToken{}, errors.New(errorMsg), false
+				}
+				kind = NUMERIC
+			}
+
 			// boolean?
 			if tokenValue == "true" {
 

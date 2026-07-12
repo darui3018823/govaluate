@@ -162,6 +162,12 @@ func TestNoParameterEvaluation(test *testing.T) {
 		},
 		EvaluationTest{
 
+			Name:     "NaN equality is false",
+			Input:    "(NaN==NaN)==false",
+			Expected: true,
+		},
+		EvaluationTest{
+
 			Name:     "Compound boolean",
 			Input:    "5 < 10 && 1 < 5",
 			Expected: true,
@@ -1434,6 +1440,22 @@ func TestNilParameters(test *testing.T) {
 
 	if err != nil {
 		test.Fail()
+	}
+}
+
+func TestNaNNilParameters(test *testing.T) {
+
+	expression, err := NewEvaluableExpression("(NaN==NaN)==false")
+	if err != nil {
+		test.Fatalf("Failed to parse NaN expression: %v", err)
+	}
+
+	result, err := expression.Evaluate(nil)
+	if err != nil {
+		test.Fatalf("Failed to evaluate NaN expression: %v", err)
+	}
+	if result != true {
+		test.Fatalf("Expected NaN equality expression to be true, got %v", result)
 	}
 }
 

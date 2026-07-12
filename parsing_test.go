@@ -3,6 +3,7 @@ package govaluate
 import (
 	"bytes"
 	"fmt"
+	"math"
 	"reflect"
 	"testing"
 	"time"
@@ -93,6 +94,16 @@ func TestConstantParsing(test *testing.T) {
 				ExpressionToken{
 					Kind:  NUMERIC,
 					Value: 11259375.0,
+				},
+			},
+		},
+		TokenParsingTest{
+			Name:  "Single NaN numeric",
+			Input: "NaN",
+			Expected: []ExpressionToken{
+				ExpressionToken{
+					Kind:  NUMERIC,
+					Value: math.NaN(),
 				},
 			},
 		},
@@ -1630,6 +1641,16 @@ func runTokenParsingTest(tokenParsingTests []TokenParsingTest, test *testing.T) 
 
 			reflectedKind := reflect.TypeOf(expectedToken.Value).Kind()
 			if reflectedKind == reflect.Func {
+				continue
+			}
+
+			if reflectedKind == reflect.Float64 && math.IsNaN(expectedToken.Value.(float64)) {
+				actualValue, ok := actualToken.Value.(float64)
+				if !ok || !math.IsNaN(actualValue) {
+					test.Logf("Test '%s' failed:", parsingTest.Name)
+					test.Logf("Expected token value '%v' does not match '%v'", expectedToken.Value, actualToken.Value)
+					test.Fail()
+				}
 				continue
 			}
 

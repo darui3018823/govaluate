@@ -1,7 +1,6 @@
 package govaluate
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"regexp"
@@ -307,11 +306,9 @@ Returns false if the stream ended before whitespace was broken or condition was 
 */
 func readUntilFalse(stream *lexerStream, includeWhitespace bool, breakWhitespace bool, allowEscaping bool, condition func(rune) bool) (string, bool) {
 
-	var tokenBuffer bytes.Buffer
+	var tokenBuffer strings.Builder
 	var character rune
 	var conditioned bool
-
-	conditioned = false
 
 	for stream.canRead() {
 
@@ -320,8 +317,14 @@ func readUntilFalse(stream *lexerStream, includeWhitespace bool, breakWhitespace
 		// Use backslashes to escape anything
 		if allowEscaping && character == '\\' {
 
+			if !stream.canRead() {
+				// stream ends on a dangling escape; treat it as an unmet condition
+				// rather than reading past the end of the stream.
+				break
+			}
+
 			character = stream.readCharacter()
-			tokenBuffer.WriteString(string(character))
+			tokenBuffer.WriteRune(character)
 			continue
 		}
 
@@ -337,7 +340,7 @@ func readUntilFalse(stream *lexerStream, includeWhitespace bool, breakWhitespace
 		}
 
 		if condition(character) {
-			tokenBuffer.WriteString(string(character))
+			tokenBuffer.WriteRune(character)
 		} else {
 			conditioned = true
 			stream.rewind(1)

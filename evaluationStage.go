@@ -90,6 +90,11 @@ func addStage(left any, right any, parameters Parameters) (any, error) {
 
 	// string concat if either are strings
 	if isString(left) || isString(right) {
+		if l, ok := left.(string); ok {
+			if r, ok := right.(string); ok {
+				return l + r, nil
+			}
+		}
 		return fmt.Sprintf("%v%v", left, right), nil
 	}
 
@@ -135,10 +140,30 @@ func ltStage(left any, right any, parameters Parameters) (any, error) {
 	return boolIface(left.(float64) < right.(float64)), nil
 }
 func equalStage(left any, right any, parameters Parameters) (any, error) {
-	return boolIface(reflect.DeepEqual(left, right)), nil
+	return boolIface(valuesEqual(left, right)), nil
 }
 func notEqualStage(left any, right any, parameters Parameters) (any, error) {
-	return boolIface(!reflect.DeepEqual(left, right)), nil
+	return boolIface(!valuesEqual(left, right)), nil
+}
+
+// valuesEqual matches reflect.DeepEqual, with an allocation-free fast path for
+// the primitive types this evaluator produces.
+func valuesEqual(left any, right any) bool {
+	switch l := left.(type) {
+	case string:
+		if r, ok := right.(string); ok {
+			return l == r
+		}
+	case float64:
+		if r, ok := right.(float64); ok {
+			return l == r
+		}
+	case bool:
+		if r, ok := right.(bool); ok {
+			return l == r
+		}
+	}
+	return reflect.DeepEqual(left, right)
 }
 func andStage(left any, right any, parameters Parameters) (any, error) {
 	return boolIface(left.(bool) && right.(bool)), nil

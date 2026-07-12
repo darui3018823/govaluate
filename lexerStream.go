@@ -8,25 +8,17 @@ type lexerStream struct {
 
 func newLexerStream(source string) *lexerStream {
 
-	var ret *lexerStream
-	var runes []rune
-
-	for _, character := range source {
-		runes = append(runes, character)
+	runes := []rune(source)
+	return &lexerStream{
+		source: runes,
+		length: len(runes),
 	}
-
-	ret = new(lexerStream)
-	ret.source = runes
-	ret.length = len(runes)
-	return ret
 }
 
 func (stream *lexerStream) readCharacter() rune {
 
-	var character rune
-
-	character = stream.source[stream.position]
-	stream.position += 1
+	character := stream.source[stream.position]
+	stream.position++
 	return character
 }
 

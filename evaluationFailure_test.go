@@ -98,6 +98,43 @@ func TestNilParameterUsage(test *testing.T) {
 	}
 }
 
+func TestUndefinedIdentifierEvaluationDoesNotPanic(test *testing.T) {
+
+	testCases := []string{
+		"null",
+		"nil",
+		"Inf",
+		"foo+1",
+		"x==x",
+		"[param name]",
+		"π+1",
+		"変数+1",
+	}
+
+	for _, input := range testCases {
+		test.Run(input, func(test *testing.T) {
+			defer func() {
+				if r := recover(); r != nil {
+					test.Fatalf("Expected evaluation error for %q, got panic: %v", input, r)
+				}
+			}()
+
+			expression, err := NewEvaluableExpression(input)
+			if err != nil {
+				test.Fatalf("Expected %q to parse successfully, got %v", input, err)
+			}
+
+			_, err = expression.Evaluate(nil)
+			if err == nil {
+				test.Fatalf("Expected evaluation error for %q, got none", input)
+			}
+			if !strings.Contains(err.Error(), ABSENT_PARAMETER) {
+				test.Fatalf("Expected missing parameter error for %q, got %v", input, err)
+			}
+		})
+	}
+}
+
 func TestModifierTyping(test *testing.T) {
 
 	evaluationTests := []EvaluationFailureTest{

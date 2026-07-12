@@ -92,8 +92,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 					tokenValueInt, err := strconv.ParseUint(tokenString, 16, 64)
 
 					if err != nil {
-						errorMsg := fmt.Sprintf("Unable to parse hex value '%v' to uint64\n", tokenString)
-						return ExpressionToken{}, errors.New(errorMsg), false
+						return ExpressionToken{}, fmt.Errorf("Unable to parse hex value '%v' to uint64\n", tokenString), false
 					}
 
 					kind = NUMERIC
@@ -108,8 +107,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 			tokenValue, err = strconv.ParseFloat(tokenString, 64)
 
 			if err != nil {
-				errorMsg := fmt.Sprintf("Unable to parse numeric value '%v' to float64\n", tokenString)
-				return ExpressionToken{}, errors.New(errorMsg), false
+				return ExpressionToken{}, fmt.Errorf("Unable to parse numeric value '%v' to float64\n", tokenString), false
 			}
 			kind = NUMERIC
 			break
@@ -150,8 +148,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 			if tokenValue == "NaN" {
 				tokenValue, err = strconv.ParseFloat(tokenString, 64)
 				if err != nil {
-					errorMsg := fmt.Sprintf("Unable to parse numeric value '%v' to float64\n", tokenString)
-					return ExpressionToken{}, errors.New(errorMsg), false
+					return ExpressionToken{}, fmt.Errorf("Unable to parse numeric value '%v' to float64\n", tokenString), false
 				}
 				kind = NUMERIC
 			}
@@ -191,8 +188,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 
 				// check that it doesn't end with a hanging period
 				if tokenString[len(tokenString)-1] == '.' {
-					errorMsg := fmt.Sprintf("Hanging accessor on token '%s'", tokenString)
-					return ExpressionToken{}, errors.New(errorMsg), false
+					return ExpressionToken{}, fmt.Errorf("Hanging accessor on token '%s'", tokenString), false
 				}
 
 				kind = ACCESSOR
@@ -205,8 +201,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 					firstCharacter := getFirstRune(splits[i])
 
 					if unicode.ToUpper(firstCharacter) != firstCharacter {
-						errorMsg := fmt.Sprintf("Unable to access unexported field '%s' in token '%s'", splits[i], tokenString)
-						return ExpressionToken{}, errors.New(errorMsg), false
+						return ExpressionToken{}, fmt.Errorf("Unable to access unexported field '%s' in token '%s'", splits[i], tokenString), false
 					}
 				}
 			}
@@ -288,8 +283,7 @@ func readToken(stream *lexerStream, state lexerState, functions map[string]Expre
 			break
 		}
 
-		errorMessage := fmt.Sprintf("Invalid token: '%s'", tokenString)
-		return ret, errors.New(errorMessage), false
+		return ret, fmt.Errorf("Invalid token: '%s'", tokenString), false
 	}
 
 	ret.Kind = kind

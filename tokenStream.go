@@ -7,26 +7,20 @@ type tokenStream struct {
 }
 
 func newTokenStream(tokens []ExpressionToken) *tokenStream {
-
-	var ret *tokenStream
-
-	ret = new(tokenStream)
-	ret.tokens = tokens
-	ret.tokenLength = len(tokens)
-	return ret
+	return &tokenStream{
+		tokens:      tokens,
+		tokenLength: len(tokens),
+	}
 }
 
 func (stream *tokenStream) rewind() {
-	stream.index -= 1
+	stream.index--
 }
 
 func (stream *tokenStream) next() ExpressionToken {
 
-	var token ExpressionToken
-
-	token = stream.tokens[stream.index]
-
-	stream.index += 1
+	token := stream.tokens[stream.index]
+	stream.index++
 	return token
 }
 

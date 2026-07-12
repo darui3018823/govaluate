@@ -173,14 +173,14 @@ func regexStage(left any, right any, parameters Parameters) (any, error) {
 	var pattern *regexp.Regexp
 	var err error
 
-	switch right.(type) {
+	switch right := right.(type) {
 	case string:
-		pattern, err = regexp.Compile(right.(string))
+		pattern, err = regexp.Compile(right)
 		if err != nil {
-			return nil, errors.New(fmt.Sprintf("Unable to compile regexp pattern '%v': %v", right, err))
+			return nil, fmt.Errorf("Unable to compile regexp pattern '%v': %v", right, err)
 		}
 	case *regexp.Regexp:
-		pattern = right.(*regexp.Regexp)
+		pattern = right
 	}
 
 	return pattern.Match([]byte(left.(string))), nil
@@ -238,20 +238,17 @@ func makeFunctionStage(function ExpressionFunction) evaluationOperator {
 			return function()
 		}
 
-		switch right.(type) {
-		case []any:
-			return function(right.([]any)...)
-		default:
-			return function(right)
+		if args, ok := right.([]any); ok {
+			return function(args...)
 		}
+		return function(right)
 	}
 }
 
 func typeConvertParam(p reflect.Value, t reflect.Type) (ret reflect.Value, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			errorMsg := fmt.Sprintf("Argument type conversion failed: failed to convert '%s' to '%s'", p.Kind().String(), t.Kind().String())
-			err = errors.New(errorMsg)
+			err = fmt.Errorf("Argument type conversion failed: failed to convert '%s' to '%s'", p.Kind().String(), t.Kind().String())
 			ret = p
 		}
 	}()
@@ -272,7 +269,7 @@ func typeConvertParams(method reflect.Value, params []reflect.Value) ([]reflect.
 		return nil, fmt.Errorf("Too many arguments to parameter call: got %d arguments, expected %d", len(params), numIn)
 	}
 
-	for i := 0; i < numIn; i++ {
+	for i := range numIn {
 		t := methodType.In(i)
 		p := params[i]
 		pt := p.Type()
@@ -350,7 +347,7 @@ func makeAccessorStage(pair []string) evaluationOperator {
 
 				givenParams := right.([]any)
 				params = make([]reflect.Value, len(givenParams))
-				for idx, _ := range givenParams {
+				for idx := range givenParams {
 					params[idx] = reflect.ValueOf(givenParams[idx])
 				}
 
@@ -431,39 +428,26 @@ func inStage(left any, right any, parameters Parameters) (any, error) {
 //
 
 func isString(value any) bool {
-
-	switch value.(type) {
-	case string:
-		return true
-	}
-	return false
+	_, ok := value.(string)
+	return ok
 }
 
 func isRegexOrString(value any) bool {
-
 	switch value.(type) {
-	case string:
-		return true
-	case *regexp.Regexp:
+	case string, *regexp.Regexp:
 		return true
 	}
 	return false
 }
 
 func isBool(value any) bool {
-	switch value.(type) {
-	case bool:
-		return true
-	}
-	return false
+	_, ok := value.(bool)
+	return ok
 }
 
 func isFloat64(value any) bool {
-	switch value.(type) {
-	case float64:
-		return true
-	}
-	return false
+	_, ok := value.(float64)
+	return ok
 }
 
 /*
@@ -497,11 +481,8 @@ func comparatorTypeCheck(left any, right any) bool {
 }
 
 func isArray(value any) bool {
-	switch value.(type) {
-	case []any:
-		return true
-	}
-	return false
+	_, ok := value.([]any)
+	return ok
 }
 
 /*

@@ -8,7 +8,7 @@ type sanitizedParameters struct {
 	orig Parameters
 }
 
-func (p sanitizedParameters) Get(key string) (interface{}, error) {
+func (p sanitizedParameters) Get(key string) (any, error) {
 	value, err := p.orig.Get(key)
 	if err != nil {
 		return nil, err
@@ -17,6 +17,6 @@ func (p sanitizedParameters) Get(key string) (interface{}, error) {
 	return normalizeNumber(value), nil
 }
 
-func normalizeNumber(input interface{}) interface{} {
+func normalizeNumber(input any) any {
 	return value.NormalizeNumber(input)
 }

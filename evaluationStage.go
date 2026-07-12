@@ -181,6 +181,10 @@ func regexStage(left any, right any, parameters Parameters) (any, error) {
 		}
 	case *regexp.Regexp:
 		pattern = right
+	default:
+		// only reachable when type checks are disabled; return an error instead of
+		// dereferencing a nil pattern below.
+		return nil, fmt.Errorf("Value '%v' cannot be used as a regexp pattern, it is not a string or compiled pattern", right)
 	}
 
 	return pattern.Match([]byte(left.(string))), nil
@@ -304,8 +308,7 @@ func makeAccessorStage(pair []string) evaluationOperator {
 		// therefore every call to an accessor sets up a defer that tries to recover from panics, converting them to errors.
 		defer func() {
 			if r := recover(); r != nil {
-				errorMsg := fmt.Sprintf("Failed to access '%s': %v", reconstructed, r.(string))
-				err = errors.New(errorMsg)
+				err = fmt.Errorf("Failed to access '%s': %v", reconstructed, r)
 				ret = nil
 			}
 		}()

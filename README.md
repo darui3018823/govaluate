@@ -13,6 +13,8 @@ Provides support for evaluating arbitrary C-like artithmetic/string expressions.
 
 # ARCHIVED -- See [ARCHIVED.md](./ARCHIVED.md) for reasons and alternatives.
 
+Run the full local test suite with `.\test.ps1` on Windows PowerShell, or `./test.sh` on Unix-like shells.
+
 Why can't you just write these expressions in code?
 --
 

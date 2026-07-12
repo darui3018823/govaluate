@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/darui3018823/govaluate/internal/datetime"
+	"github.com/darui3018823/govaluate/v3/internal/datetime"
 )
 
 const isoDateFormat string = datetime.ISOFormat

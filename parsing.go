@@ -8,7 +8,7 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/darui3018823/govaluate/internal/datetime"
+	"github.com/darui3018823/govaluate/v3/internal/datetime"
 )
 
 func parseTokens(expression string, functions map[string]ExpressionFunction) ([]ExpressionToken, error) {

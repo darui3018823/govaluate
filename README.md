@@ -1,17 +1,17 @@
 govaluate
 ====
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/darui3018823/govaluate.svg)](https://pkg.go.dev/github.com/darui3018823/govaluate)
+[![Go Reference](https://pkg.go.dev/badge/github.com/darui3018823/govaluate/v3.svg)](https://pkg.go.dev/github.com/darui3018823/govaluate/v3)
 
-This fork is module-based and requires Go 1.26 or newer.
+This is a maintained fork of [Knetic/govaluate](https://github.com/Knetic/govaluate). The upstream project is archived; see [ARCHIVED.md](./ARCHIVED.md) for the original author's archival note.
+
+This fork is module-based, requires Go 1.26 or newer, and uses the v3 module path.
 
 ```bash
-go get github.com/darui3018823/govaluate
+go get github.com/darui3018823/govaluate/v3
 ```
 
 Provides support for evaluating arbitrary C-like artithmetic/string expressions.
-
-# ARCHIVED -- See [ARCHIVED.md](./ARCHIVED.md) for reasons and alternatives.
 
 Run the full local test suite with `.\test.ps1` on Windows PowerShell, or `./test.sh` on Unix-like shells.
 
@@ -237,4 +237,4 @@ Releases will explicitly state when an API break happens, and if they do not spe
 License
 --
 
-This project is licensed under the MIT general use license. You're free to integrate, fork, and play with this code as you feel fit without consulting the author, as long as you provide proper credit to the author in your works.
+This project is licensed under the MIT general use license. The original copyright notice and MIT permission notice are retained in [LICENSE](./LICENSE), as required by the license.

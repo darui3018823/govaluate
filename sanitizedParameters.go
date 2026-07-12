@@ -1,6 +1,6 @@
 package govaluate
 
-import "github.com/darui3018823/govaluate/internal/value"
+import "github.com/darui3018823/govaluate/v3/internal/value"
 
 // sanitizedParameters is a wrapper for Parameters that does sanitization as
 // parameters are accessed.

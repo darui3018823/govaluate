@@ -304,9 +304,9 @@ var validLexerStates = []lexerState{
 	},
 }
 
-func (this lexerState) canTransitionTo(kind TokenKind) bool {
+func (state lexerState) canTransitionTo(kind TokenKind) bool {
 
-	for _, validKind := range this.validNextKinds {
+	for _, validKind := range state.validNextKinds {
 
 		if validKind == kind {
 			return true

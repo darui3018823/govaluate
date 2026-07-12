@@ -15,7 +15,7 @@ type DebugStruct struct {
 }
 
 /*
-	Represents a test for parsing failures
+Represents a test for parsing failures
 */
 type EvaluationFailureTest struct {
 	Name       string
@@ -247,8 +247,8 @@ func TestLogicalOperatorTyping(test *testing.T) {
 }
 
 /*
-	While there is type-safe transitions checked at parse-time, tested in the "parsing_test" and "parsingFailure_test" files,
-	we also need to make sure that we receive type mismatch errors during evaluation.
+While there is type-safe transitions checked at parse-time, tested in the "parsing_test" and "parsingFailure_test" files,
+we also need to make sure that we receive type mismatch errors during evaluation.
 */
 func TestComparatorTyping(test *testing.T) {
 

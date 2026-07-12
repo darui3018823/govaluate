@@ -5,7 +5,7 @@ import (
 )
 
 /*
-	Represents a test of correctly creating a SQL query string from an expression.
+Represents a test of correctly creating a SQL query string from an expression.
 */
 type QueryTest struct {
 	Name     string

@@ -9,7 +9,7 @@ import (
 )
 
 /*
-	Represents a test of expression evaluation
+Represents a test of expression evaluation
 */
 type EvaluationTest struct {
 	Name       string
@@ -1431,7 +1431,7 @@ func TestParameterizedEvaluation(test *testing.T) {
 }
 
 /*
-	Tests the behavior of a nil set of parameters.
+Tests the behavior of a nil set of parameters.
 */
 func TestNilParameters(test *testing.T) {
 
@@ -1460,8 +1460,8 @@ func TestNaNNilParameters(test *testing.T) {
 }
 
 /*
-	Tests functionality related to using functions with a struct method receiver.
-	Created to test #54.
+Tests functionality related to using functions with a struct method receiver.
+Created to test #54.
 */
 func TestStructFunctions(test *testing.T) {
 

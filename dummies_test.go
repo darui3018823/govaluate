@@ -6,7 +6,7 @@ import (
 )
 
 /*
-	Struct used to test "parameter calls".
+Struct used to test "parameter calls".
 */
 type dummyParameter struct {
 	String    string

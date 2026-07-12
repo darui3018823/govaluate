@@ -22,7 +22,7 @@ const (
 )
 
 /*
-	Represents a test for parsing failures
+Represents a test for parsing failures
 */
 type ParsingFailureTest struct {
 	Name     string

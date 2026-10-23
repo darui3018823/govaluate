@@ -5,7 +5,7 @@ govaluate
 
 This is a maintained fork of [Knetic/govaluate](https://github.com/Knetic/govaluate). The upstream project is archived; see [ARCHIVED.md](./ARCHIVED.md) for the original author's archival note.
 
-This fork is module-based, requires Go 1.26 or newer, and uses the v3 module path.
+This fork is module-based, requires Go 1.27.3 or newer, and uses the v3 module path.
 
 ```bash
 go get github.com/darui3018823/govaluate/v3
